@@ -127,6 +127,7 @@ public final class KeyboardDrawing extends DrawState {
 
     @Override
     public void onKeyPress(int keyCode, int modifiers) {
+        var shift = (modifiers & GLFW.GLFW_MOD_SHIFT) != 0;
         switch (keyCode) {
             case GLFW.GLFW_KEY_BACKSPACE:
                 removeCharFromSig();
@@ -147,7 +148,7 @@ public final class KeyboardDrawing extends DrawState {
                 moveOrigin(1, 0);
                 break;
             case GLFW.GLFW_KEY_R:
-                rotate(1);
+                rotate(shift ? -1 : 1);
                 break;
             default:
         }
