@@ -86,7 +86,8 @@ public final class AutoCompleting extends DrawState {
                 var sig = unlocked.get(chosen).sig();
                 if (sig == null)
                     return;
-                nextState = new KeyboardDrawing(castref, start, sig);
+                var dir = unlocked.get(chosen).dir();
+                nextState = new KeyboardDrawing(castref, start, sig, dir);
                 break;
             case GLFW.GLFW_KEY_UP:
                 offsetChosen(-1);
