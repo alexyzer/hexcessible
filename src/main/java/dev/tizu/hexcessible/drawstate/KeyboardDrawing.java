@@ -16,7 +16,6 @@ import dev.tizu.hexcessible.HexcessibleConfig;
 import dev.tizu.hexcessible.Utils;
 import dev.tizu.hexcessible.accessor.CastRef;
 import dev.tizu.hexcessible.entries.PatternEntries;
-import kotlin.Pair;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
@@ -87,7 +86,7 @@ public final class KeyboardDrawing extends DrawState {
         }
 
         var mutated = castref.findClosestAvailable(origin,
-                new HexPattern(HexDir.EAST, sig));
+                new HexPattern(originDir, sig));
         if (mutated == null) {
             start = null;
             startDir = null;
@@ -150,6 +149,10 @@ public final class KeyboardDrawing extends DrawState {
             case GLFW.GLFW_KEY_L, GLFW.GLFW_KEY_RIGHT:
                 moveOrigin(1, 0);
                 break;
+            case GLFW.GLFW_KEY_R:
+                originDir = HexDir.values()[(originDir.ordinal() + 1) % HexDir.values().length];
+                recalculateNewAll();
+                break;
             default:
         }
     }
@@ -178,6 +181,8 @@ public final class KeyboardDrawing extends DrawState {
     }
 
     public void renderPattern(DrawContext ctx) {
+        if (Hexcessible.cfg().keyboardDraw.ghost)
+            renderPattern(ctx, origin, originDir, sig, COLOR3, COLOR4);
         if (start != null)
             renderPattern(ctx, start, startDir, sig, COLOR1, COLOR2);
 

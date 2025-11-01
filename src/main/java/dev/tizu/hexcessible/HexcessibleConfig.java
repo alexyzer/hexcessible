@@ -69,6 +69,8 @@ public class HexcessibleConfig implements ConfigData {
         public ForcedTooltip tooltip = ForcedTooltip.DESCRIPTIVE;
         @ConfigEntry.Gui.Tooltip
         public boolean keyHint = false;
+        @ConfigEntry.Gui.Tooltip
+        public boolean ghost = true;
     }
 
     public static class AutoComplete {

@@ -86,9 +86,14 @@ public class Utils {
     }
 
     public static HexDir[] hexDirs() {
-        return new HexDir[] {
-                HexDir.EAST, HexDir.SOUTH_EAST, HexDir.SOUTH_WEST,
-                HexDir.WEST, HexDir.NORTH_WEST, HexDir.NORTH_EAST };
+        return HexDir.values();
+    }
+
+    public static HexDir[] hexDirs(HexDir start) {
+        var dirs = new HexDir[HexDir.values().length];
+        for (int i = 0; i < dirs.length; i++)
+            dirs[i] = HexDir.values()[(start.ordinal() + i) % HexDir.values().length];
+        return dirs;
     }
 
     private static final String WORLD_CONTEXT_RGX = "[^a-zA-Z0-9]";

@@ -89,12 +89,13 @@ public class CastRef {
         queue.add(start);
         visited.add(start); // so that start doesn't get re-queued
 
+        var dirs = Utils.hexDirs(pat.getStartDir());
         while (!queue.isEmpty()) {
             HexCoord current = queue.poll();
-            for (HexDir startDir : Utils.hexDirs())
+            for (HexDir startDir : dirs)
                 if (fits(current, pat, startDir))
                     return new PatternPlacement(current, startDir);
-            for (HexDir dir : Utils.hexDirs()) {
+            for (HexDir dir : dirs) {
                 HexCoord next = current.plus(dir);
                 if (visited.add(next))
                     queue.add(next);
