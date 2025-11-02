@@ -32,6 +32,8 @@
     "text.autoconfig.hexcessible.option.uppercaseSig.@Tooltip": "Represent a signature, e.g. qaq, as QAQ",
     "text.autoconfig.hexcessible.option.tooltipRenderSigs": "Render Pattern",
     "text.autoconfig.hexcessible.option.tooltipRenderSigs.@Tooltip": "Render patterns in Hexcessible UIs, like Autocomplete or Idle Hover",
+    "text.autoconfig.hexcessible.option.tooltipFixed": "Fix tooltips in place",
+    "text.autoconfig.hexcessible.option.tooltipFixed.@Tooltip": "Prevent tooltips from moving around, instead always positioning them top-left.",
     "text.autoconfig.hexcessible.option.idle": "Idling in Spellcasting Interface",
     "text.autoconfig.hexcessible.option.idle.tooltip": "Show hover tooltip",
     "text.autoconfig.hexcessible.option.mouseDraw": "Spellcasting with Mouse",

@@ -32,6 +32,10 @@ public class HexcessibleConfig implements ConfigData {
     public boolean uppercaseSig = false;
     @ConfigEntry.Gui.Tooltip
     public boolean tooltipRenderSigs = true;
+    /*
+     * TODO: @ConfigEntry.Gui.Tooltip
+     * public boolean tooltipFixed = false;
+     */
 
     @ConfigEntry.Gui.CollapsibleObject
     public Idle idle = new Idle();
