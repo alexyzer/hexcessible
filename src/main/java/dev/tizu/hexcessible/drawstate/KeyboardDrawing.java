@@ -266,8 +266,12 @@ public final class KeyboardDrawing extends DrawState {
             String submitKeys, boolean failed, HexcessibleConfig.Tooltip tooltip,
             int queued) {
         var tr = MinecraftClient.getInstance().textRenderer;
-        if (sig.isEmpty() || !tooltip.visible())
+        if (sig.isEmpty() || !tooltip.visible()) {
+            if (failed)
+                ctx.drawTooltip(tr, Text.translatable("hexcessible.no_space")
+                        .formatted(Formatting.RED), mx, y);
             return;
+}
 
         var text = Text.literal(Utils.angle(sig, Hexcessible.cfg().uppercaseSig));
         if (!submitKeys.isEmpty() && !failed)
