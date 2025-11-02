@@ -5,6 +5,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import gay.object.hexdebug.gui.splicing.SplicingTableScreen;
 
 @Mixin(SplicingTableScreen.class)
-public class DrawStateHexdgbInteropMixin {
+public class DrawStateHexdbgInteropMixin {
 
 }
