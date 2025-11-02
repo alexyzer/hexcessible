@@ -109,7 +109,9 @@ public final class KeyboardDrawing extends DrawState {
         renderPattern(ctx);
         if (Hexcessible.cfg().keyboardDraw.keyHint)
             renderNextPointTooltips(ctx);
-        KeyboardDrawing.render(ctx, mx, my, sig, "␣⇥↩", start == null,
+        var pos = castref.coordToPx(end == null ? origin : end);
+        var x = pos.x + 20;
+        KeyboardDrawing.render(ctx, (int) x, (int) pos.y, sig, "␣⇥↩", start == null,
                 Hexcessible.cfg().keyboardDraw.tooltip, queuedCount());
     }
 
@@ -230,14 +232,20 @@ public final class KeyboardDrawing extends DrawState {
         if (end == null || endDir == null)
             return;
         var tr = MinecraftClient.getInstance().textRenderer;
+        var endpx = castref.coordToPx(end);
         for (var angle : HexAngle.values()) {
             var pos = end.plus(endDir.rotatedBy(angle));
             var charstr = Utils.angle(angle);
             if (castref.isUsed(pos) || !canGo(angle) || charstr == null)
                 continue;
             var px = castref.coordToPx(pos);
+            var dx = px.x - endpx.x;
+            var dy = px.y - endpx.y;
+            var distance = Math.sqrt(dx * dx + dy * dy);
+            var targetX = endpx.x + (dx / distance) * 20;
+            var targetY = endpx.y + (dy / distance) * 20;
             ctx.drawCenteredTextWithShadow(tr, Text.literal(charstr),
-                    (int) px.x + 1, (int) px.y - 10, 0xff_A8A8A8);
+                    (int) targetX - 1, (int) targetY - 10, 0xff_A8A8A8);
         }
     }
 
@@ -271,7 +279,7 @@ public final class KeyboardDrawing extends DrawState {
                 ctx.drawTooltip(tr, Text.translatable("hexcessible.no_space")
                         .formatted(Formatting.RED), mx, y);
             return;
-}
+        }
 
         var text = Text.literal(Utils.angle(sig, Hexcessible.cfg().uppercaseSig));
         if (!submitKeys.isEmpty() && !failed)
