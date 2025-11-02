@@ -61,9 +61,12 @@ public final class KeyboardDrawing extends DrawState {
 
     @Override
     public void requestExit() {
-        if (nextDrawing != null)
+        if (nextDrawing != null) {
+            // we may have placed a thingy where it wasn't when nextDrawing got
+            // initialized, so we recalculate it (this fixes chaining overlap)
+            nextDrawing.recalculateNewAll();
             nextState = nextDrawing;
-        else
+        } else
             super.requestExit();
     }
 
@@ -73,7 +76,7 @@ public final class KeyboardDrawing extends DrawState {
         return 1 + nextDrawing.queuedCount();
     }
 
-    private void recalculateNewAll() {
+    public void recalculateNewAll() {
         if (sig.isEmpty()) {
             start = origin;
             startDir = originDir;
@@ -155,6 +158,7 @@ public final class KeyboardDrawing extends DrawState {
     }
 
     private void submit() {
+        recalculateNewAll();
         if (start == null)
             return;
         castref.execute(new HexPattern(startDir, sig), start);
