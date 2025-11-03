@@ -26,6 +26,7 @@ public class CastRef {
     private final Hand handOpenedWith;
     private final List<ResolvedPattern> patterns;
     private final Set<HexCoord> usedSpots;
+    private boolean canTypeHere = true;
 
     public CastRef(GuiSpellcasting castui, Hand handOpenedWith,
             List<ResolvedPattern> patterns, Set<HexCoord> usedSpots) {
@@ -49,6 +50,14 @@ public class CastRef {
 
     public void closeUI() {
         castui.close();
+    }
+
+    public boolean canTypeHere() {
+        return canTypeHere;
+    }
+
+    public void disallowTyping() {
+        canTypeHere = false;
     }
 
     public boolean isUsed(HexCoord coord) {

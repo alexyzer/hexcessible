@@ -181,7 +181,7 @@ public final class AutoCompleting extends DrawState {
                         .formatted(Formatting.DARK_GRAY, Formatting.ITALIC);
         if (!noDistract())
             ctx.drawTooltip(tr, tInput, x, y);
-        else
+        else if (castref.canTypeHere())
             ctx.drawTextWithShadow(tr, tInput, x + 12, y - 12, 15728880);
     }
 

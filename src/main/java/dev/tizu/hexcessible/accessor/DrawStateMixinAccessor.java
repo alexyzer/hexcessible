@@ -10,4 +10,6 @@ public interface DrawStateMixinAccessor {
 
     @Nullable
     HexPattern getPatternAt(int x, int y);
+
+    void disallowTyping();
 }

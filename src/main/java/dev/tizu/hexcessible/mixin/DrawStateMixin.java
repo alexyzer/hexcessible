@@ -34,6 +34,8 @@ public class DrawStateMixin implements DrawStateMixinAccessor {
     @Unique
     private CastingInterfaceAccessor accessor;
     @Unique
+    private CastRef castref;
+    @Unique
     private DrawState state;
     @Unique
     private boolean noActing;
@@ -49,7 +51,7 @@ public class DrawStateMixin implements DrawStateMixinAccessor {
     private void init(CallbackInfo info) {
         var castui = (GuiSpellcasting) (Object) this;
         accessor = new CastingInterfaceAccessor(castui);
-        var castref = new CastRef(castui, handOpenedWith, patterns, usedSpots);
+        castref = new CastRef(castui, handOpenedWith, patterns, usedSpots);
         state = DrawState.getNew(castref);
         noActing = !(MinecraftClient.getInstance().currentScreen instanceof GuiSpellcasting);
     }
@@ -72,9 +74,7 @@ public class DrawStateMixin implements DrawStateMixinAccessor {
     @Inject(at = @At("RETURN"), method = "render")
     public void render(DrawContext ctx, int mouseX, int mouseY, float delta,
             CallbackInfo info) {
-        if (noActing)
-            return;
-        if (DrawState.shouldClose(state)) {
+        if (!noActing && DrawState.shouldClose(state)) {
             ((GuiSpellcasting) (Object) this).close();
             return;
         }
@@ -90,7 +90,8 @@ public class DrawStateMixin implements DrawStateMixinAccessor {
                 renderDebug(ctx, debug.get(i), i + 1);
         }
 
-        state.onRender(ctx, mouseX, mouseY);
+        if (!noActing)
+            state.onRender(ctx, mouseX, mouseY);
     }
 
     @Unique
@@ -122,5 +123,10 @@ public class DrawStateMixin implements DrawStateMixinAccessor {
                 .findFirst()
                 .map(ResolvedPattern::getPattern)
                 .orElse(null);
+    }
+
+    @Override
+    public void disallowTyping() {
+        castref.disallowTyping();
     }
 }
