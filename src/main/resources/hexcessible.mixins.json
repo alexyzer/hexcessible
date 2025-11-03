@@ -10,7 +10,8 @@
         "DimmedMixin",
         "KeyDocsScreenMixin",
         "PerWorldLearnMixin",
-        "DrawStateHexdbgInteropMixin"
+        "DrawStateHexdbgInteropMixin",
+        "NoHexicalWalkMixin"
     ],
     "injectors": {
         "defaultRequire": 1

@@ -1,40 +1,38 @@
 package dev.tizu.hexcessible.mixin;
 
+import java.util.List;
+
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import at.petrak.hexcasting.client.gui.GuiSpellcasting;
+import dev.tizu.hexcessible.Hexcessible;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.input.Input;
-import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.option.KeyBinding;
 
-// FIXME: this is still broken on hexxy4 :3
-// Also, some players may want to move, so removal is not an option.
-// Readd to mixin json once fixed
-
-@Mixin(ClientPlayerEntity.class)
+@Mixin(KeyBinding.class)
 public class NoHexicalWalkMixin {
-    @Shadow
-    public Input input;
+    @Unique
+    private static final List<String> DISALLOWED = List.of("key.forward",
+            "key.back", "key.left", "key.right", "key.jump", "key.sneak");
 
-    @Inject(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/tutorial/TutorialManager;onMovement(Lnet/minecraft/client/input/Input;)V", shift = At.Shift.AFTER))
-    private void noHexicalWalk(CallbackInfo info) {
-
+    // https://github.com/miyucomics/hexical/blob/main/src/client/java/miyucomics/hexical/mixin/ClientPlayerEntityMixin.java
+    // This is sort of a hack, but it seems to work reasonably well. There might
+    // be some better way to do this, but until someone comes up to me telling
+    // me how shit this is, I'm just going to leave it like this.
+    @Inject(method = "setPressed", at = @At("HEAD"), cancellable = true)
+    private void blockPressedWhileCasting(boolean pressed, CallbackInfo ci) {
+        if (!Hexcessible.cfg().noHexicalWalk)
+            return;
         MinecraftClient client = MinecraftClient.getInstance();
         if (!(client.currentScreen instanceof GuiSpellcasting))
             return;
-
-        // TODO: this prevents Hexical walk from working, as it collides with
-        // our keyboard input method.
-        input.pressingForward = false;
-        input.pressingBack = false;
-        input.pressingLeft = false;
-        input.pressingRight = false;
-        input.jumping = false;
-        input.sneaking = false;
+        KeyBinding self = (KeyBinding) (Object) this;
+        String id = self.getTranslationKey();
+        if (DISALLOWED.contains(id) && pressed)
+            ci.cancel();
     }
-
 }
