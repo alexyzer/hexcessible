@@ -8,7 +8,6 @@
         "DrawStateParentElemMixin",
         "FloatiesMixin",
         "DimmedMixin",
-        "ShowAllDotsMixin",
         "KeyDocsScreenMixin",
         "PerWorldLearnMixin",
         "DrawStateHexdbgInteropMixin"

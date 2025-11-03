@@ -10,6 +10,7 @@ import dev.tizu.hexcessible.Hexcessible;
 
 @Mixin(GuiSpellcasting.class)
 public class ShowAllDotsMixin {
+    // TODO: make this more performant, then reintroduce
 
     @ModifyVariable(at = @At("STORE"), method = "render", name = "radius")
     public int radius(int radius) {
