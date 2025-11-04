@@ -24,6 +24,7 @@ import dev.tizu.hexcessible.accessor.CastRef;
 import dev.tizu.hexcessible.accessor.CastingInterfaceAccessor;
 import dev.tizu.hexcessible.accessor.DrawStateMixinAccessor;
 import dev.tizu.hexcessible.drawstate.DrawState;
+import dev.tizu.hexcessible.entries.PatternEntries;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
@@ -51,6 +52,7 @@ public class DrawStateMixin implements DrawStateMixinAccessor {
 
     @Inject(at = @At("HEAD"), method = "init")
     private void init(CallbackInfo info) {
+        PatternEntries.INSTANCE.invalidateCaches();
         var castui = (GuiSpellcasting) (Object) this;
         accessor = new CastingInterfaceAccessor(castui);
         castref = new CastRef(castui, handOpenedWith, patterns, usedSpots);

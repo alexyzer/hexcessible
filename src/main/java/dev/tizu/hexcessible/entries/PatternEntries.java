@@ -34,8 +34,6 @@ public class PatternEntries {
     public void reindex() {
         entries.clear();
         perWorld.clear();
-        perWorldCache.clear();
-        fuzzySearchCache.clear();
 
         IXplatAbstractions.INSTANCE.getActionRegistry().getKeys().forEach(key -> {
             var item = IXplatAbstractions.INSTANCE.getActionRegistry().get(key);
@@ -54,7 +52,7 @@ public class PatternEntries {
             entries.add(new Entry(id, name, checkLock, dir, sig, impls, 0));
         });
 
-        populatePerWorldCache();
+        invalidateCaches();
     }
 
     private void populatePerWorldCache() {
@@ -63,10 +61,15 @@ public class PatternEntries {
             if (knownEntry.length != 3 || !knownEntry[0].equals(Utils.getWorldContext()))
                 return;
             var id = Identifier.tryParse(knownEntry[1]);
-            if (id != null) {
+            if (id != null)
                 perWorldCache.put(id, Utils.angle(knownEntry[2]));
-            }
         });
+    }
+
+    public void invalidateCaches() {
+        perWorldCache.clear();
+        fuzzySearchCache.clear();
+        populatePerWorldCache();
     }
 
     public List<Entry> get() {
