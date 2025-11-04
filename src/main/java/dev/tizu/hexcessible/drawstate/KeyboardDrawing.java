@@ -113,7 +113,7 @@ public final class KeyboardDrawing extends DrawState {
             renderNextPointTooltips(ctx);
         var pos = castref.coordToPx(end == null ? origin : end);
         var x = pos.x + 20;
-        KeyboardDrawing.render(ctx, (int) x, (int) pos.y, sig, "␣⇥↩", start == null,
+        KeyboardDrawing.render(ctx, (int) x, (int) pos.y, sig, start == null,
                 Hexcessible.cfg().keyboardDraw.tooltip, queuedCount());
     }
 
@@ -274,8 +274,7 @@ public final class KeyboardDrawing extends DrawState {
     }
 
     public static void render(DrawContext ctx, int mx, int y, List<HexAngle> sig,
-            String submitKeys, boolean failed, HexcessibleConfig.Tooltip tooltip,
-            int queued) {
+            boolean failed, HexcessibleConfig.Tooltip tooltip, int queued) {
         var tr = MinecraftClient.getInstance().textRenderer;
         if (sig.isEmpty() || !tooltip.visible()) {
             if (failed)
@@ -285,9 +284,6 @@ public final class KeyboardDrawing extends DrawState {
         }
 
         var text = Text.literal(Utils.angle(sig, Hexcessible.cfg().uppercaseSig));
-        if (!submitKeys.isEmpty() && !failed)
-            text = text.append(Text.literal(" " + submitKeys)
-                    .formatted(Formatting.DARK_GRAY));
         ctx.drawTooltip(tr, text, mx, y);
         y += 17;
 
@@ -344,9 +340,9 @@ public final class KeyboardDrawing extends DrawState {
             keys.put("bksp/s", "undo");
         }
 
-        keys.put("LMB/tab/enter/space", "cast");
-        keys.put("DRAG/h/j/k/l/up/down/left/right", "move");
-        keys.put("SCROLL/r/shift-r", "rotate");
+        keys.put("lmb/tab/enter/space", "cast");
+        keys.put("drag/h/j/k/l/←/↓/↑/→", "move");
+        keys.put("scroll/r/shift-r", "rotate");
 
         return keys;
     }

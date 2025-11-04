@@ -23,7 +23,7 @@ public final class MouseDrawing extends DrawState {
             return;
         var sig = accessor.getPattern().getAngles();
         var size = (int) castref.hexSize() * 2;
-        KeyboardDrawing.render(ctx, mx + size, my, sig, "", false,
+        KeyboardDrawing.render(ctx, mx + size, my, sig, false,
                 Hexcessible.cfg().mouseDraw.tooltip, 0);
     }
 
@@ -37,7 +37,7 @@ public final class MouseDrawing extends DrawState {
     public Map<String, String> getHints() {
         var keys = new HashMap<String, String>();
 
-        keys.put("LMB", "cast");
+        keys.put("lmb", "cast");
 
         return keys;
     }

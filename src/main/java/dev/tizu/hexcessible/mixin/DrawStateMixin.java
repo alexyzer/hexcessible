@@ -41,8 +41,6 @@ public class DrawStateMixin implements DrawStateMixinAccessor {
     private DrawState state;
     @Unique
     private boolean noActing;
-    @Unique
-    private double time = 0;
 
     @Shadow(remap = false)
     private Hand handOpenedWith;
@@ -79,7 +77,6 @@ public class DrawStateMixin implements DrawStateMixinAccessor {
     @Inject(at = @At("RETURN"), method = "render")
     public void render(DrawContext ctx, int mouseX, int mouseY, float delta,
             CallbackInfo info) {
-        time += delta;
         if (!noActing && DrawState.shouldClose(state)) {
             ((GuiSpellcasting) (Object) this).close();
             return;
@@ -119,13 +116,11 @@ public class DrawStateMixin implements DrawStateMixinAccessor {
         var x = 6;
         var y = ctx.getScaledWindowHeight() - 16;
         for (var hint : hints.entrySet()) {
-            var keys = hint.getKey().split("/");
-            var keyI = (int) (time * 0.05) % keys.length;
             var text = Text.empty()
+                    .append(Text.literal(hint.getKey() + " ")
+                            .formatted(Formatting.GRAY))
                     .append(Text.translatable("hexcessible.hint." + hint.getValue())
-                            .formatted(Formatting.DARK_GRAY))
-                    .append(Text.literal(" [" + keys[keyI] + "]")
-                            .formatted(Formatting.GRAY));
+                            .formatted(Formatting.DARK_GRAY));
             ctx.drawTextWithShadow(MinecraftClient.getInstance().textRenderer,
                     text, x, y, 0xFFFFFF);
             y -= 10;

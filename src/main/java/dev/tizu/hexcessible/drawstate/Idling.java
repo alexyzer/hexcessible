@@ -13,11 +13,13 @@ import dev.tizu.hexcessible.Utils;
 import dev.tizu.hexcessible.accessor.CastRef;
 import dev.tizu.hexcessible.entries.PatternEntries;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.util.math.Vec2f;
 
 public final class Idling extends DrawState {
 
     private @Nullable HexPattern hoveredOver;
     private long hoveredOverStart = 0;
+    private Vec2f mousePos = new Vec2f(0, 0);
 
     public Idling(CastRef castref) {
         super(castref);
@@ -39,8 +41,10 @@ public final class Idling extends DrawState {
     public void onKeyPress(int keyCode, int modifiers) {
         var ctrl = (modifiers & GLFW.GLFW_MOD_CONTROL) != 0;
         if (keyCode == GLFW.GLFW_KEY_SPACE && ctrl
-                && Hexcessible.cfg().autoComplete.allow)
-            nextState = new AutoCompleting(castref);
+                && Hexcessible.cfg().autoComplete.allow) {
+            var pos = castref.pxToCoord(mousePos);
+            nextState = new AutoCompleting(castref, pos);
+        }
         if (keyCode == GLFW.GLFW_KEY_E && ctrl && hoveredOver != null)
             nextState = new AliasChanging(castref, PatternEntries.INSTANCE
                     .getFromSig(hoveredOver.getAngles()));
@@ -48,6 +52,7 @@ public final class Idling extends DrawState {
 
     @Override
     public void onRender(DrawContext ctx, int mx, int my) {
+        mousePos = new Vec2f((float) mx, (float) my);
         var hovered = castref.getPatternAt(mx, my);
         if (hovered == null) {
             hoveredOver = null;
@@ -55,8 +60,8 @@ public final class Idling extends DrawState {
             hoveredOverStart = System.currentTimeMillis();
             hoveredOver = hovered;
         } else if (hoveredOverStart + 500 < System.currentTimeMillis()) {
-            KeyboardDrawing.render(ctx, mx, my, hovered.getAngles(), "",
-                    false, Hexcessible.cfg().idle.tooltip, 0);
+            KeyboardDrawing.render(ctx, mx, my, hovered.getAngles(), false,
+                    Hexcessible.cfg().idle.tooltip, 0);
         }
     }
 
@@ -82,9 +87,9 @@ public final class Idling extends DrawState {
             var kbdChars = String.join("/", KeyboardDrawing.validSig
                     .subList(0, KeyboardDrawing.validSig.size() / 2).stream()
                     .map(Object::toString).toList());
-            keys.put("LMB/" + kbdChars, "draw_start");
+            keys.put("lmb/" + kbdChars, "draw_start");
         } else {
-            keys.put("LMB", "draw_start");
+            keys.put("lmb", "draw_start");
         }
 
         if (Hexcessible.cfg().autoComplete.allow)

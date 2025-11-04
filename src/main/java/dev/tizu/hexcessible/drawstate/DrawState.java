@@ -63,7 +63,7 @@ public sealed class DrawState
      * Modifiers: ctrl, shift
      * Combined press: ctrl-a
      * Alternatives: q/w/e/a/d
-     * Mouse: LMB, RMB, DRAG, SCROLL
+     * Mouse: lmb, rmb, drag, scroll
      */
     public Map<String, String> getHints() {
         return Map.of();
