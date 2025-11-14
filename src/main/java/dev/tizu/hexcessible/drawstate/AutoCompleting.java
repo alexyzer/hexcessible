@@ -117,11 +117,6 @@ public final class AutoCompleting extends DrawState {
     public void onMouseMove(double mx, double my) {
         mousePos = new Vec2f((float) mx, (float) my);
         lastInteractWasMouse = true;
-
-        if (!noDistract())
-            return;
-        if (mousePos.distanceSquared(anchor) > breakoutSize)
-            requestExit();
     }
 
     @Override
