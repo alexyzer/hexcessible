@@ -11,7 +11,8 @@
         "KeyDocsScreenMixin",
         "PerWorldLearnMixin",
         "DrawStateHexdbgInteropMixin",
-        "NoHexicalWalkMixin"
+        "NoHexicalWalkMixin",
+        "NoHexicalEvokeMixin"
     ],
     "injectors": {
         "defaultRequire": 1
