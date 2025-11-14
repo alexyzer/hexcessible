@@ -230,7 +230,6 @@ public final class AutoCompleting extends DrawState {
                 text.append(Text.literal("\n"));
             text.append(Text.literal(impl.getArgs()));
         }
-        addAliasLines(text, opt);
         return tr.wrapLines(text, 170);
     }
 
@@ -241,15 +240,8 @@ public final class AutoCompleting extends DrawState {
         var docN = "[" + (chosenDoc + 1) + "/" + opt.impls().size() + "]";
         var impl = opt.impls().get(chosenDoc);
         var description = Text.literal(docN + " " + impl.getArgs()).formatted(Formatting.GRAY)
-                .append(Text.literal("\n" + impl.getDesc() + "\n").formatted(Formatting.DARK_GRAY));
-        addAliasLines(description, opt);
+                .append(Text.literal("\n" + impl.getDesc()).formatted(Formatting.DARK_GRAY));
         return tr.wrapLines(description, 170);
-    }
-
-    private void addAliasLines(MutableText desc, PatternEntries.Entry opt) {
-        if (opt.isAliased())
-            desc.append(Text.translatable("hexcessible.alias", opt.rawName())
-                    .formatted(Formatting.DARK_GRAY));
     }
 
     private List<OrderedText> prepareDescription() {
