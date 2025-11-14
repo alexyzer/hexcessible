@@ -39,14 +39,14 @@ public final class AliasChanging extends DrawState {
 
         var originalStr = sig + " " + original;
         var originalT = alias.isBlank()
-                ? Text.literal(originalStr + " ⇥↩").formatted(Formatting.BLUE)
+                ? Text.literal(originalStr).formatted(Formatting.BLUE)
                 : Text.literal(originalStr).formatted(Formatting.GRAY);
         ctx.drawTooltip(tr, originalT, x, y - 1);
 
         var aliasT = alias.isBlank()
                 ? Text.translatable("hexcessible.start_typing.alias")
                         .formatted(Formatting.DARK_GRAY)
-                : Text.literal(alias + " ⇥↩")
+                : Text.literal(alias)
                         .formatted(Formatting.BLUE);
         ctx.drawTooltip(tr, aliasT, x, y + 16);
     }
