@@ -35,6 +35,9 @@ public class Bookkeeper implements SmartSig {
 
     @Override
     public @Nullable PatternEntries.Entry get(List<HexAngle> sig) {
+        if (sig.isEmpty())
+            return null;
+
         sig = new ArrayList<>(sig);
         List<Boolean> target = new ArrayList<>();
 
