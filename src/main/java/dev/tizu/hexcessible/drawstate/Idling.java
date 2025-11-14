@@ -56,6 +56,7 @@ public final class Idling extends DrawState {
         var hovered = castref.getPatternAt(mx, my);
         if (hovered == null) {
             hoveredOver = null;
+            hoveredOverEntry = null;
         } else if (hovered != hoveredOver) {
             hoveredOverStart = System.currentTimeMillis();
             hoveredOver = hovered;
