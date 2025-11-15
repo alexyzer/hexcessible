@@ -40,6 +40,11 @@ public class PatternEntries {
             var entry = IXplatAbstractions.INSTANCE.getActionRegistry().getEntry(key);
 
             var id = key.getValue();
+            if (id == null) {
+                Hexcessible.LOGGER.error("Failed to get identifier for action {}", key);
+                return;
+            }
+
             var name = Text.translatable(HexAPI.instance().getActionI18nKey(key)).getString();
             Supplier<Boolean> checkLock = () -> BookEntries.INSTANCE.isLocked(id.toString());
             var dir = item.prototype().getStartDir();
