@@ -1,5 +1,8 @@
 package dev.tizu.hexcessible.mixin;
 
+import dev.tizu.hexcessible.smartsig.HexicalMacro;
+import miyucomics.hexical.inits.HexicalKeybinds;
+import net.fabricmc.loader.api.FabricLoader;
 import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -47,9 +50,11 @@ public class KeyDocsScreenMixin {
     @Inject(method = "keyPressed", at = @At("HEAD"), order = 999)
     void openHexbook(int keycode, int scancode, int modifiers, CallbackInfoReturnable<Boolean> cir) {
         if ((Object) this instanceof DrawStateMixinAccessor accessor
-                && accessor.state() instanceof Idling
-                && Hexcessible.cfg().keyDocs
-                && keycode == GLFW.GLFW_KEY_N) {
+                && (
+                    accessor.state() instanceof Idling && Hexcessible.cfg().keyDocs && keycode == GLFW.GLFW_KEY_N ||
+                    FabricLoader.getInstance().isModLoaded("hexical") && HexicalKeybinds.OPEN_HEXBOOK.matchesKey(keycode,scancode)
+                )
+        ) {
             staffScreen = (GuiSpellcasting) (Object) this;
             var pos = accessor.getPatternAt((int) mousePos.x, (int) mousePos.y);
             if (!openHexbookEntry(pos, keycode, modifiers))
